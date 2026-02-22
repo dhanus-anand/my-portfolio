@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type Direction = "up" | "down" | "left" | "right";
 
@@ -35,13 +36,16 @@ export function FadeIn({
 }: FadeInProps) {
   const ref = useRef(null);
   const reduceMotion = useReducedMotion();
-  const isInView = useInView(ref, { once, margin: "-80px" });
+  const isMobile = useIsMobile();
+  const isInView = useInView(ref, { once, margin: isMobile ? "-40px" : "-80px" });
 
+  const dur = isMobile ? Math.min(duration, 0.35) : duration;
+  const dist = isMobile ? Math.min(distance, 18) : distance;
   const initialOffset = directions[direction];
   const initial = {
     opacity: 0,
-    x: initialOffset.x !== undefined ? initialOffset.x * (distance / 40) : 0,
-    y: initialOffset.y !== undefined ? initialOffset.y * (distance / 40) : 0,
+    x: initialOffset.x !== undefined ? initialOffset.x * (dist / 40) : 0,
+    y: initialOffset.y !== undefined ? initialOffset.y * (dist / 40) : 0,
   };
 
   if (reduceMotion) {
@@ -55,8 +59,8 @@ export function FadeIn({
       initial={initial}
       animate={isInView ? { opacity: 1, x: 0, y: 0 } : initial}
       transition={{
-        duration,
-        delay,
+        duration: dur,
+        delay: isMobile ? delay * 0.5 : delay,
         ease,
       }}
     >
@@ -74,7 +78,8 @@ interface StaggerGroupProps {
 
 export function StaggerGroup({ children, className = "", stagger = 0.1 }: StaggerGroupProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isMobile = useIsMobile();
+  const isInView = useInView(ref, { once: true, margin: isMobile ? "-40px" : "-80px" });
 
   return (
     <motion.div
@@ -84,7 +89,7 @@ export function StaggerGroup({ children, className = "", stagger = 0.1 }: Stagge
       animate={isInView ? "visible" : "hidden"}
       variants={{
         visible: {
-          transition: { staggerChildren: stagger },
+          transition: { staggerChildren: isMobile ? stagger * 0.5 : stagger },
         },
       }}
     >

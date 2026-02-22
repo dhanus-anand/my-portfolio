@@ -23,9 +23,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://dhanush.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  manifest: "/site.webmanifest",
   icons: {
-    icon: "/images/logo-dk.png",
-    apple: "/images/logo-dk.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: "/apple-icon.png",
   },
   title: {
     default: "Dhanus Kanth Anand | Software Engineer",

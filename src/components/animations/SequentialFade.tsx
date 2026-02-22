@@ -2,8 +2,10 @@
 
 import { useReducedMotion } from "framer-motion";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const staggerDelay = 0.12;
+const staggerDelayMobile = 0.06;
 
 interface SequentialFadeProps {
   children: React.ReactNode;
@@ -12,6 +14,7 @@ interface SequentialFadeProps {
 
 export function SequentialFade({ children, className = "" }: SequentialFadeProps) {
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>;
@@ -24,8 +27,8 @@ export function SequentialFade({ children, className = "" }: SequentialFadeProps
       variants={{
         visible: {
           transition: {
-            staggerChildren: staggerDelay,
-            delayChildren: 0.2,
+            staggerChildren: isMobile ? staggerDelayMobile : staggerDelay,
+            delayChildren: isMobile ? 0.08 : 0.2,
           },
         },
       }}
@@ -41,6 +44,11 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+const itemVariantsMobile = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export function SequentialFadeItem({
   children,
   className = "",
@@ -49,6 +57,7 @@ export function SequentialFadeItem({
   className?: string;
 }) {
   const shouldReduceMotion = useReducedMotion();
+  const isMobile = useIsMobile();
 
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>;
@@ -56,8 +65,8 @@ export function SequentialFadeItem({
 
   return (
     <motion.div
-      variants={itemVariants}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      variants={isMobile ? itemVariantsMobile : itemVariants}
+      transition={{ duration: isMobile ? 0.25 : 0.4, ease: "easeOut" }}
       className={className}
     >
       {children}

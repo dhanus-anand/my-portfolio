@@ -3,11 +3,15 @@
 import { useEffect, useState } from "react";
 import { Preloader } from "@/components/animations/Preloader";
 import { FirstLoadReveal } from "@/components/animations/FirstLoadReveal";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const MIN_INTRO_MS = 650;
+const MIN_INTRO_MS_MOBILE = 380;
 
 export function FirstLoadProvider({ children }: { children: React.ReactNode }) {
   const [isReady, setIsReady] = useState(false);
+  const isMobile = useIsMobile();
+  const minIntroMs = isMobile ? MIN_INTRO_MS_MOBILE : MIN_INTRO_MS;
 
   // Always start at the top on load/refresh (e.g. land on Hero)
   useEffect(() => {
@@ -24,7 +28,7 @@ export function FirstLoadProvider({ children }: { children: React.ReactNode }) {
 
     const markReady = () => {
       const elapsed = Date.now() - startedAt;
-      const delay = Math.max(0, MIN_INTRO_MS - elapsed);
+      const delay = Math.max(0, minIntroMs - elapsed);
       readyTimer = setTimeout(() => setIsReady(true), delay);
     };
 
@@ -40,7 +44,7 @@ export function FirstLoadProvider({ children }: { children: React.ReactNode }) {
       window.removeEventListener("load", markReady);
       if (readyTimer) clearTimeout(readyTimer);
     };
-  }, []);
+  }, [minIntroMs]);
 
   useEffect(() => {
     if (typeof document === "undefined") return undefined;

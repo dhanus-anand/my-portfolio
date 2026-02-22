@@ -27,6 +27,12 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
+  /* Native scroll on touch devices for smoother, less laggy scrolling */
+  @media (pointer: coarse) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -93,6 +99,14 @@
 }
 .app-reveal.app-reveal--active::after {
   animation: revealGlow 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@media (pointer: coarse) {
+  .app-reveal.app-reveal--active::before {
+    animation-duration: 0.48s;
+  }
+  .app-reveal.app-reveal--active::after {
+    animation-duration: 0.48s;
+  }
 }
 @keyframes revealSweep {
   0% {
