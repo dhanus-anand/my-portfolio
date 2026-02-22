@@ -70,7 +70,7 @@ export function Skills() {
   return (
     <section
       id="skills"
-      className="py-20 px-4 sm:px-6 lg:px-8"
+      className="py-20 px-4 sm:px-6 lg:px-8 hidden md:block scroll-section-optimize"
       aria-labelledby="skills-heading"
     >
       <div className="mx-auto w-full max-w-content">

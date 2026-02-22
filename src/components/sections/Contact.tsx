@@ -44,7 +44,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="py-20 px-4 sm:px-6 lg:px-8"
+      className="py-20 px-4 sm:px-6 lg:px-8 scroll-section-optimize"
       aria-labelledby="contact-heading"
     >
       <div className="mx-auto w-full max-w-content">

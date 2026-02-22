@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { ISourceOptions } from "@tsparticles/engine";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const options: ISourceOptions = {
   fullScreen: { enable: true },
@@ -53,6 +54,7 @@ const options: ISourceOptions = {
 export function ParticleBackground() {
   const [init, setInit] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -64,15 +66,15 @@ export function ParticleBackground() {
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduceMotion || isMobile) return;
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
     }).then(() => setInit(true));
-  }, [reduceMotion]);
+  }, [reduceMotion, isMobile]);
 
   const particlesLoaded = useCallback(async () => {}, []);
 
-  if (reduceMotion || !init) return null;
+  if (reduceMotion || isMobile || !init) return null;
 
   return (
     <div className="absolute inset-0 -z-10" aria-hidden>

@@ -147,4 +147,11 @@
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-blue to-accent-purple;
   }
+  /* Let browser skip off-screen section work during scroll (helps mobile production) */
+  @media (pointer: coarse) {
+    .scroll-section-optimize {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 600px;
+    }
+  }
 }

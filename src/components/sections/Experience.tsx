@@ -4,12 +4,15 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
 import { Card } from "@/components/ui/Card";
 import { experience } from "@/content/experience";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export function Experience() {
+  const isMobile = useIsMobile();
+
   return (
     <section
       id="experience"
-      className="py-20 px-4 sm:px-6 lg:px-8 overflow-visible"
+      className="py-20 px-4 sm:px-6 lg:px-8 overflow-visible scroll-section-optimize"
       aria-labelledby="experience-heading"
     >
       <div className="mx-auto w-full max-w-content">
@@ -40,14 +43,18 @@ export function Experience() {
                       {entry.dates}
                     </p>
                     <h3 className="text-lg font-bold text-foreground">{entry.role}</h3>
-                    <p className="text-base text-muted-foreground mb-4">{entry.company}</p>
-                    <ul className="space-y-2.5 text-base text-muted-foreground leading-relaxed">
-                      {entry.achievements.map((a, j) => (
-                        <li key={j} className="list-disc list-inside pl-0">
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className={`text-base text-muted-foreground ${isMobile ? "" : "mb-4"}`}>
+                      {entry.company}
+                    </p>
+                    {!isMobile && (
+                      <ul className="space-y-2.5 text-base text-muted-foreground leading-relaxed">
+                        {entry.achievements.map((a, j) => (
+                          <li key={j} className="list-disc list-inside pl-0">
+                            {a}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </Card>
                 </FadeIn>
               </li>

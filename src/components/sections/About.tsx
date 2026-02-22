@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FadeIn } from "@/components/animations/FadeIn";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const aboutParagraphs = [
   `I'm Dhanus Kanth Anand, a software engineer with over three years of experience building and maintaining production systems in both enterprise and startup environments. I'm currently pursuing my Master's in Computer Science at the University of Massachusetts Amherst.`,
@@ -30,11 +31,13 @@ const education = [
 
 export function About() {
   const [headshotError, setHeadshotError] = useState(false);
+  const isMobile = useIsMobile();
+  const paragraphsToShow = isMobile ? aboutParagraphs.slice(0, 1) : aboutParagraphs;
 
   return (
     <section
       id="about"
-      className="pt-12 pb-20 sm:pt-16 sm:pb-20 px-4 sm:px-6 lg:px-8"
+      className="pt-12 pb-20 sm:pt-16 sm:pb-20 px-4 sm:px-6 lg:px-8 scroll-section-optimize"
       aria-labelledby="about-heading"
     >
       <div className="mx-auto w-full max-w-content">
@@ -68,7 +71,7 @@ export function About() {
 
           <FadeIn direction="right" delay={0.15} className="min-w-0 flex flex-col">
             <div className="space-y-4 flex-1">
-              {aboutParagraphs.map((paragraph, i) => (
+              {paragraphsToShow.map((paragraph, i) => (
                 <p key={i} className="text-muted-foreground leading-relaxed text-foreground/90">
                   {paragraph}
                 </p>
